@@ -51,7 +51,11 @@ class Conjurer extends React.Component {
     render() {
       return (
         <div onMouseMove={this.onMouseMove} onClick={this.onClick}>
-            <svg width={500} height={500}>
+            <svg width={1000} height={500}>
+                <rect x="10" y="10" width="30" height="30" stroke="black" fill="transparent" stroke-width="5"/>
+                <circle cx="25" cy="75" r="20" stroke="red" fill="transparent" stroke-width="5"/>
+                <line x1="10" x2="50" y1="110" y2="150" stroke="orange" fill="transparent" stroke-width="5"/>
+
                 <circle cx={this.state.x} cy={this.state.y} r={this.state.radius} fill="red" />
             </svg>
             <p>{JSON.stringify(this.state)}</p>
