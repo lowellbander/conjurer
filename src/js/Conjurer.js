@@ -4,38 +4,41 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactCanvas from 'react-canvas';
 
-import Test from './Test';
-
-var Surface = ReactCanvas.Surface;
-var Image = ReactCanvas.Image;
-var Text = ReactCanvas.Text;
+function log(value) {
+    console.log(value);
+}
 
 class Conjurer extends React.Component {
-  getTextStyle() {
-    return {
-      top: 0,
-      left: 0,
-      width: window.innerWidth,
-      height: 50,
-      lineHeight: 20,
-      fontSize: 25
-    };
-  }
 
-  render() {
-    var surfaceWidth = window.innerWidth;
-    var surfaceHeight = window.innerHeight;
-    var textStyle = this.getTextStyle();
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: "foobar",
+        };
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+    
+    render() {
+    var radius = 30;  
 
     return (
-      <Surface width={surfaceWidth} height={surfaceHeight} left={0} top={0}>
-        <Text style={textStyle}>
-          Here is some text.
-        </Text>
-        <Test />
-      </Surface>
+        <div>
+            <svg>
+                <circle cx={50} cy={50} r={radius} fill="red" />
+            </svg>
+            <p>this is a p tag's text</p>
+            <input
+                type="text"
+                value={this.state.value}
+                onChange={this.handleChange}
+            />
+            <p>state:</p>
+            <p>{JSON.stringify(this.state)}</p>
+        </div>
     );
   }
 }
