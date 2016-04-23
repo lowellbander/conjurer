@@ -39,10 +39,12 @@ class DraggableComponent extends React.Component {
     this.isLifted = true;
     this.mouseX = e.clientX;
     this.mouseY = e.clientY;
+    this.hasBeenMoved = false;
   }
 
   handleMouseMove(e) {
     if (this.isLifted) {
+      this.hasBeenMoved = true;
       var diffX = e.clientX - this.mouseX;
       var diffY = e.clientY - this.mouseY;
       this.mouseX = e.clientX;
@@ -60,6 +62,14 @@ class DraggableComponent extends React.Component {
 
   handleMouseUp(e) {
     this.isLifted = false;
+    if (!this.hasBeenMoved) {
+      console.log("click via handleMouseDown then handleMouseUp without moving the mouse");
+      // here we should treat this as a click
+      // create box showing data of object
+      // I feel like this may be the wrong way to do this because now telling if
+      // an object has been clicked depends on whether or not it is a draggable component because
+      // draggable components have different handleMouseDown, handleMouseUp events than non draggable components
+    }
   }
 }
 
