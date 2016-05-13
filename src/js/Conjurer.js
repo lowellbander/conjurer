@@ -70,6 +70,7 @@ class Conjurer extends React.Component {
       height: 180,
       x: this.x_orig,
       y: this.y_orig,
+      children: [],
       shapes: [{
         type: 'circle',
         top: 0,
@@ -224,8 +225,11 @@ class Conjurer extends React.Component {
     }
 
     var getCollision = function (candidates) {
+      if (candidates.length === 0) {
+        return null;
+      }
       var collision = candidates.find(didCollide);
-      return collision;
+      return collision ? collision : getCollision([].concat(...candidates.map(c => c.children)));
     };
     
     var collision = getCollision(this.state.objects.filter(other => obj.id !== other.id));
@@ -237,7 +241,7 @@ class Conjurer extends React.Component {
   
   
   mount(child, parent, origin) {
-    parent.children = parent.children || [];
+    parent = copyObj(parent);
     child = copyObj(child);
     child.key = getNewKey();
     
@@ -271,11 +275,12 @@ class Conjurer extends React.Component {
   }
 
   renderObject(obj) {
+    obj.children = obj.children || [];
     var onChange = function (x, y) {
       this.updatePosition(x, y, obj);
     }.bind(this);
     
-    function renderChild(child) {
+    function renderSimpleObject(child) {
       return (
           <Generic
               key={child.id}
@@ -287,18 +292,21 @@ class Conjurer extends React.Component {
       )
     }
 
-    var children = (obj.children) ? obj.children.map(renderChild) : <Group/>;
-    
+    function getFamily(obj) {
+      var family = [obj];
+      if (obj.children) {
+        for (let child of obj.children) {
+          family = family.concat(getFamily(child));
+        }
+      }
+      return family;
+    }
+
+    var family = getFamily(obj).map(renderSimpleObject);
+
     return (
         <Draggable xCoord={obj.x} yCoord={obj.y} onChange={onChange}>
-          <Generic
-              key={obj.id}
-              width={obj.width}
-              height={obj.height}
-              shapes={obj.shapes}
-              constrain={true}
-              />
-          {children}
+          {family}
         </Draggable>
     );
   }
@@ -312,6 +320,7 @@ class Conjurer extends React.Component {
     
     var minX =  Math.min(...this.state.newShapes.map(wrapper => wrapper.x));
     var minY =  Math.min(...this.state.newShapes.map(wrapper => wrapper.y));
+    // TODO : object factory to abstract this boilerplate
     var newObject = {
       id: this.dragref,
       ref: this.dragref,
@@ -319,6 +328,7 @@ class Conjurer extends React.Component {
       height: 180,
       x: minX,
       y: minY,
+      children: [],
       shapes: this.state.newShapes.slice().map(function (wrapper) {
         var shape = wrapper.shapes[0];
         shape.left = wrapper.x - minX;
@@ -422,7 +432,7 @@ var copyShape = function(shape) {
     height: shape.height,
     color: shape.color
   };
-}
+};
 
 var copyObj = function(obj) {
   return {
@@ -432,10 +442,10 @@ var copyObj = function(obj) {
     heigh: obj.height,
     x: obj.x,
     y: obj.y,
-    shapes: obj.shapes.map(copyShape)
+    shapes: obj.shapes.map(copyShape),
+    children: obj.children.map(copyObj)
   };
-  // TODO: copy children
-}
+};
 
 var getRight = function (obj) {
   return obj.x
