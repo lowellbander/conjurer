@@ -15,6 +15,8 @@ class CodeEditor extends React.Component {
 	constructor() {
 		super();
 
+		this.currentObject = {};
+
 		this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleKeyUp = this.handleKeyUp.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -22,6 +24,7 @@ class CodeEditor extends React.Component {
 		// Add event listeners
 		ee.addListener(Event.CODE_EDITOR_ON_CLICK, this.listenToKeyEvents.bind(this));
 		ee.addListener(Event.CODE_EDITOR_OFF_CLICK, this.unlistenToKeyEvents.bind(this));
+		ee.addListener(Event.OBJECTS_STATE_UPDATED, this.setCurrentObject.bind(this));
 	}
 
 	componentWillMount() {
@@ -802,6 +805,10 @@ class CodeEditor extends React.Component {
 		);
 	}
 
+	setCurrentObject(object) {
+		this.currentObject = object;
+	}
+
 	runCode() {
 		var texts = this.state.texts;
 		var code = "";
@@ -811,8 +818,13 @@ class CodeEditor extends React.Component {
 			code += line + "\n";
 		});
 
-		console.log(code); 
-		window.alert(code);
+		console.log(this.currentObject);
+		var result;
+		code = "var codeToRun = function () {" + code + "};" +
+			"result = codeToRun.bind(this.currentObject)();";
+		console.log(code);
+		eval(code);
+		console.log(result);
 	}
 
 	clearCode() {
