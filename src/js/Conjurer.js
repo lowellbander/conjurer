@@ -328,7 +328,7 @@ class Conjurer extends React.Component {
           }]}
                 />
           </Button>
-          <Button xCoord={400} yCoord={10} onClick={this.addAnchor.bind(this)}>
+          <Button xCoord={260} yCoord={110} onClick={this.addAnchor.bind(this)}>
             <Generic
                 key={12321}
                 width={100}
