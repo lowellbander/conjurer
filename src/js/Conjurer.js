@@ -153,6 +153,8 @@ class Conjurer extends React.Component {
 
     this.setState({
       objects: this.state.objects.concat(item)
+    }, function() {
+      ee.emitEvent(Event.OBJECTS_STATE_UPDATED, [this.state.objects[0]]);
     });
 
     this.dragref++;
