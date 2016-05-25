@@ -47,6 +47,8 @@ class Conjurer extends React.Component {
     this.mount = this.mount.bind(this);
 
     this.dragref = 0;
+    this.editable = false;
+    this.color = 'green';
   }
 
   componentWillMount() {
@@ -95,7 +97,7 @@ class Conjurer extends React.Component {
 
     // TODO: TEST
     //return;
-
+if(this.editable === true){
     this.isDrawing = true;
     this.x_orig = e.clientX;
     this.y_orig = e.clientY;
@@ -113,6 +115,7 @@ class Conjurer extends React.Component {
     this.setState({
       newShapes: this.state.newShapes.concat(obj)
     });
+  }
   }
 
   getPartsBinStyle() {
@@ -333,6 +336,21 @@ class Conjurer extends React.Component {
     console.log("gid: " + gid);
     console.log(obj);
   }
+
+  toggleEdit() {
+    this.editable = !this.editable;
+    if(this.color === 'green'){
+      this.color = 'black';
+    }
+    else {
+      this.color = 'green';
+    }
+
+    this.setState({
+      newShapes: this.state.newShapes
+    });
+
+  }
   
   render() {
     var surfaceWidth = window.innerWidth;
@@ -344,6 +362,21 @@ class Conjurer extends React.Component {
         <Group style={this.getWrapperStyle()} onMouseDown={this.handleMouseDown.bind(this)} onDoubleClick={this.handleDoubleClick.bind(this)}>
           {this.state.objects.map(this.renderObject)}
           {this.state.newShapes.map(this.renderObject)}
+          <Button xCoord={200} yCoord={10} toggle={true} onClick={this.toggleEdit.bind(this)}>
+            <Generic
+                key={12321}
+                width={100}
+                height={100}
+                shapes={[{
+            type: 'circle',
+            top: 10,
+            left: 10,
+            width: 30,
+            height: 30,
+            color: this.color
+          }]}
+            />
+          </Button>
           <Button xCoord={260} yCoord={10} onClick={this.saveObject.bind(this)}>
             <Generic
                 key={12321}

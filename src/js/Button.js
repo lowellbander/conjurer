@@ -73,14 +73,28 @@ class Button extends React.Component {
     render() {
         let clones = React.Children.map(
             this.props.children,
-            (child) => React.cloneElement(
-                child,
-                {
-                    xCoord: this.state.x + child.props.xCoord,
-                    yCoord: this.state.y + child.props.yCoord,
-                    setDragSize: this.setDragSize.bind(this)
+            
+            function(child) {
+                var newShape = child.props.shapes;
+                if(this.props.toggle == true){
+                    if(child.props.shapes[0].color == 'green'){
+                        newShape[0].color = 'black';
+                    }
+                    else {
+                        newShape[0].color = 'green';
+                    }
                 }
-            )
+                
+                return React.cloneElement(
+                    child,
+                    {
+                        xCoord: this.state.x + child.props.xCoord,
+                        yCoord: this.state.y + child.props.yCoord,
+                        setDragSize: this.setDragSize.bind(this),
+                        shapes: newShape
+                    }
+                );
+            }.bind(this)
         );
 
         let style = this.getWrapperStyle();
@@ -100,7 +114,8 @@ class Button extends React.Component {
 
 Button.propTypes = {
     xCoord: React.PropTypes.number.isRequired,
-    yCoord: React.PropTypes.number.isRequired
+    yCoord: React.PropTypes.number.isRequired,
+    toggle: React.PropTypes.bool
 }
 
 export default Button;

@@ -66,6 +66,7 @@ class Generic extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // if this was instantiated by a draggable
+    this.setState({shapes: nextProps.shapes});
     if (this.props.hasOwnProperty('setDragSize')) {
       this.setState({
         top: nextProps.yCoord / this.ratio,
@@ -162,7 +163,6 @@ class Generic extends React.Component {
 
   render() {
     var objStyle = this.getStyle();
-
     return (
       <Group style={objStyle}>
         {
