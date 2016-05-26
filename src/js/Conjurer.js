@@ -57,7 +57,8 @@ class Conjurer extends React.Component {
       objects: [],
       parts: [],
       clone: null,
-      newShapes: []
+      newShapes: [],
+      highlightEverything: false,
     };
   }
 
@@ -197,6 +198,9 @@ if(this.editable === true){
     if (collidee) {
       this.mount(obj, collidee, origin);
     }
+    
+    this.setState({highlightEverything: !this.state.highlightEverything});
+    
   }
   
   mount(child, parent, origin) {
@@ -224,6 +228,7 @@ if(this.editable === true){
     function renderSimpleObject(child) {
       return (
           <Generic
+              highlighted={this.state.highlightEverything}
               key={child.id}
               width={child.width}
               height={child.height}
@@ -233,7 +238,7 @@ if(this.editable === true){
       )
     }
     
-    var family = obj.getFamily().map(renderSimpleObject);
+    var family = obj.getFamily().map(renderSimpleObject, this);
     
     return (
         <Draggable xCoord={obj.x} yCoord={obj.y} onChange={onChange}>
