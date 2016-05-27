@@ -116,7 +116,7 @@ class Generic extends React.Component {
       left: pos_x + this.state.absolute_offset.x,
       width: this.state.width,
       height: this.state.height,
-      backgroundColor: '#00ff00'
+      backgroundColor: this.props.highlighted ? '#e2127a' : '#00ff00',
     };
   }
 
@@ -179,6 +179,7 @@ class Generic extends React.Component {
 }
 
 Generic.propTypes = {
+  highlighted: React.PropTypes.bool,
   xCoord: React.PropTypes.number.isRequired,
   yCoord: React.PropTypes.number.isRequired,
   width: React.PropTypes.number,

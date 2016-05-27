@@ -33,7 +33,7 @@ class PartsBin extends React.Component {
 	 */
 	
 	addItem(item) {
-		console.log("Add item to parts bin");
+		// console.log("Add item to parts bin");
 		
 		this.setState({
 			items: this.state.items.set(item.id, item)
