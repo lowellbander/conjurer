@@ -6,5 +6,6 @@ module.exports = {
 	CODE_EDITOR_ON_CLICK: "code editor on click",
 	CODE_EDITOR_OFF_CLICK: "code editor off click",
 	CONJURER_CLICK: "conjurer click",
-	NUMBER_PRIMITIVE_UPDATE_VALUE: "number primitive update value"
+	NUMBER_PRIMITIVE_UPDATE_VALUE: "number primitive update value",
+	ACCESS_MEMBER_VARIABLE: "access a member variable",
 };

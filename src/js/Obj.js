@@ -1,8 +1,8 @@
 // TODO: deprecate this by delegation on Anchor
 
-import Shape from './Shape';
-
 let ANCHOR_COLOR = "#903fd1";
+let Event = require('./event/EventNames');
+let ee = require('./event/EventEmitter');
 
 class Obj {
     constructor ({id, ref, x, y, shapes, width, height, children}={}) {
@@ -16,6 +16,11 @@ class Obj {
         this.shapes = shapes;
 
         this.getCollision = this.getCollision.bind(this);
+    }
+    
+    getValue () {
+        ee.emitEvent(Event.ACCESS_MEMBER_VARIABLE, [this.id]);
+        return parseInt(this.shapes[0].value);
     }
 
     copy () {

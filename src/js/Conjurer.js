@@ -37,6 +37,8 @@ class Conjurer extends React.Component {
     // Listener for event from number primitive
     ee.addListener(Event.NUMBER_PRIMITIVE_UPDATE_VALUE, this.updateNumberPrimitive.bind(this));
 
+    ee.addListener(Event.ACCESS_MEMBER_VARIABLE, this.queueAnimation.bind(this));
+
     // coordinate data for drawing shapes
     this.x_orig = 0;
     this.y_orig = 0;
@@ -49,6 +51,13 @@ class Conjurer extends React.Component {
     this.dragref = 0;
     this.editable = false;
     this.color = 'green';
+    
+    this.queuedAnimations = [];
+    window.setInterval(function (context) {
+      context.setState({
+        currentAnimation: context.queuedAnimations.shift(),
+      });
+    }, 1000, this);
   }
 
   componentWillMount() {
@@ -59,7 +68,13 @@ class Conjurer extends React.Component {
       clone: null,
       newShapes: [],
       highlightEverything: false,
+      currentAnimation: null,
     };
+  }
+  
+  queueAnimation(id) {
+    this.queuedAnimations.push(id);
+    this.queuedAnimations.push(null); // pause between highlights
   }
 
   handleDoubleClick(e) {
@@ -160,8 +175,8 @@ if(this.editable === true){
     nitem.x = window.innerWidth/2;
     nitem.y = window.innerHeight/2;
     
-    console.log("Clone item in Conjurer");
-    console.log(nitem);
+    // console.log("Clone item in Conjurer");
+    // console.log(nitem);
 
     var that = this;
     nitem.shapes.map(function(shape, i) {
@@ -228,7 +243,7 @@ if(this.editable === true){
     function renderSimpleObject(child) {
       return (
           <Generic
-              highlighted={this.state.highlightEverything}
+              highlighted={child.id === this.state.currentAnimation}
               key={child.id}
               width={child.width}
               height={child.height}
@@ -336,10 +351,10 @@ if(this.editable === true){
 
     obj.shapes[0].value = value;
 
-    console.log("Update # id: " + id + " and val: " + value);
-    console.log(this.state.objects);
-    console.log("gid: " + gid);
-    console.log(obj);
+    // console.log("Update # id: " + id + " and val: " + value);
+    // console.log(this.state.objects);
+    // console.log("gid: " + gid);
+    // console.log(obj);
   }
 
   toggleEdit() {

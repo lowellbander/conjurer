@@ -25,8 +25,8 @@ class NumberPrimitive extends React.Component {
 	}
 
 	componentWillMount() {
-		console.log("Comp will mount");
-		console.log("Number Primitive " + this.props.id);
+		// console.log("Comp will mount");
+		// console.log("Number Primitive " + this.props.id);
 
 		var style = this.props.style;
 		this.style = {
@@ -55,7 +55,7 @@ class NumberPrimitive extends React.Component {
 		// Placeholder number
 		this.defaultValue = this.props.value.toString();
 
-		console.log(this.props);
+		// console.log(this.props);
 
 		this.state = {
 			value: this.defaultValue,

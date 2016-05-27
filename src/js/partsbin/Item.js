@@ -69,7 +69,7 @@ class Item extends React.Component {
    */
 
   cloneItem(x, y) {
-    console.log("Clone item with id: " + this.props.id);
+    // console.log("Clone item with id: " + this.props.id);
     var clone = this.state.obj;
     clone.x = x;
     clone.y = y;

@@ -816,23 +816,23 @@ class CodeEditor extends React.Component {
 			code += line + "\n";
 		});
 
-		console.log(this.currentObject);
+		// console.log(this.currentObject);
 		var result;
 		code = "var codeToRun = function () {" + code + "};" +
 			"result = codeToRun.bind(this.currentObject)();";
-		console.log(code);
+		// console.log(code);
 		eval(code);
-		console.log(result);
+		// console.log(result);
 
 		var sum = this.childSum(result);
 		console.log("Sum of children! : " + sum);
 
-		window.alert("Sum of children: " + sum);
+		// window.alert("Sum of children: " + sum);
 	}
 
 	childSum(obj) {
 		if (obj.children.length <= 0) {
-			return parseInt(obj.shapes[0].value);
+			return obj.getValue();
 		}
 
 		// Non-leaf node
